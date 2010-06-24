@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
+
+<!-- 
+    A sample installation file.
+    Use it as a base for your own installers :-)
+    
+    To compile it :
+    - go in the bin directory where you installed IzPack
+    - call "compile ../sample/install.xml -b ../sample"
+-->
+
+<installation version="1.0">
+
+    <!-- 
+        The info section.
+        The meaning of the tags should be natural ...
+    -->
+    <info>
+        <appname>WellstormWSP</appname>
+        <appversion>${app-version}</appversion>
+        <url>http://www.wellstorm.com</url>
+        <javaversion>1.6</javaversion>
+        <requiresjdk>no</requiresjdk>
+        <!--><pack200/>-->
+        <!-- run-privileged condition="izpack.windowsinstall.vista|izpack.windowsinstall.7"/ -->	
+    </info>
+
+    <!-- 
+        The gui preferences indication.
+        Sets the installer window to 640x480. It will not be able to change the size.
+    -->
+    <guiprefs width="640" height="480" resizable="yes"/>
+    
+    <variables>
+    <variable name="test.installer" value="Hinky"/>
+  <variable name="app-version" value="1.4"/>
+  <variable name="released-on" value="08/03/2002"/>
+  <variable name="prop1-value" value="foo"/>
+  <variable name="prop2-value" value="goo"/>
+  <variable name="condition.var" value="QAS"/>
+  <variable name="tanuki.dir" value="wrapper-windows-x86-32-3.4.1"/>
+  
+</variables>
+
+
+    <!-- 
+        The locale section.
+        Asks here to include the English and French langpacks.
+	    -->
+    <locale>
+        <langpack iso3="eng"/>        
+    </locale>
+
+
+    <!-- 
+        The resources section.
+        The ids must be these ones if you want to use the LicencePanel and/or the InfoPanel.
+    -->
+    <resources>
+    <res id="HTMLInfoPanel.info" src="install-readme.html" />
+       <res id="HTMLLicencePanel.licence" src="license.html" />       
+        <!-- res id="installer.langsel.img" src="splash-3.10.png" /-->
+	<res id="userInputSpec.xml" src="userInputSpec.xml" />
+    </resources>
+
+    <!-- 
+        The panels section.
+        We indicate here which panels we want to use. The order will be respected.
+    -->
+    <panels>
+        <panel classname="HelloPanel"  id="hellopanel"/>
+        <panel classname="HTMLInfoPanel" id="infopanel" encoding="ISO-8859-1"/>
+        <panel classname="HTMLLicencePanel" id="licensepanel"/>
+        <panel classname="TargetPanel" id="targetpanel"/>
+        <panel classname="PacksPanel" id="packspanel"/>
+	<panel classname="UserInputPanel" id="userinputpanel.oracle"/>
+	<panel classname="UserInputPanel" id="userinputpanel.jetty"/>	
+	<panel classname="UserInputPanel" id="userinputpanel.jetty.keystore" condition="jetty.cond.show.keystorepanel"/>	
+	<panel classname="UserInputPanel" id="userinputpanel.witsrelay"/>	
+	<panel classname="DataCheckPanel" />
+        <panel classname="SummaryPanel" id="summarypanel"/>
+	<panel classname="DataCheckPanel" />
+        <panel classname="InstallPanel" id="installpanel"/>
+        <panel classname="FinishPanel"  id="finishpanel"/>
+    </panels>
+
+<!-- The listeners section for CustomActions -->
+    <listeners>
+        <listener installer="SummaryLoggerInstallerListener"/>
+	<!-- for windows we check the registry if product was already installed -->
+	<!-- listener installer="RegistryInstallerListener"
+                  uninstaller="RegistryUninstallerListener">
+            <os family="windows"/>
+        </listener-->
+
+    </listeners>
+<conditions>
+    <condition type="variable" id="condition.1">
+      <name>condition.var</name>
+      <value>QAP</value>
+    </condition>
+
+    <condition type="variable" id="jetty.cond.show.keystorepanel">
+      <name>jetty.check.keystorepanel</name>
+      <value>true</value>
+    </condition>
+
+<condition type="variable" id="uidwellbore.override.notset">
+      <name>witsrelay.uidwellbore.override</name>
+      <value/>
+    </condition>
+
+
+     </conditions>
+     
+     <dynamicvariables>
+		<!-- only set these if we don't show the keystore panel, these are effectively our defaults -->
+		<variable name="jetty.ssl.keystore" value="./etc/keystore" condition="!jetty.cond.show.keystorepanel"/>
+		<variable name="jetty.ssl.keystore.password" value="changeit" condition="!jetty.cond.show.keystorepanel"/>	
+		
+		<variable name="witsrelay.enable.uidwellbore.overide" value="" condition="!uidwellbore.override.notset"/>	
+		<variable name="witsrelay.enable.uidwellbore.overide" value="#" condition="uidwellbore.override.notset"/>	
+
+  </dynamicvariables>
+    <!-- 
+        The packs section.
+        We specify here our packs.
+    -->
+	<packs>
+		<pack name="WSP" required="no">
+			<description>Wellstorm Witsml Service Platform</description>
+			<fileset dir="" targetdir="$INSTALL_PATH">
+				<include name="wsp/**"/>
+				<!--
+				<exclude name="wsp/lib/"/>
+				<exclude name="wsp/web/"/>
+				-->
+			</fileset>
+			<!-- copy tanuki -->
+			<singlefile src="tanuki/wrapper-windows-x86-32-3.4.1/bin/wrapper.exe" target="$INSTALL_PATH/wsp/wrapper.exe" />
+			<singlefile src="tanuki/wrapper-windows-x86-32-3.4.1/src/bin/App.bat.in" target="$INSTALL_PATH/wsp/WspApp.bat" />
+			<singlefile src="tanuki/wrapper-windows-x86-32-3.4.1/src/bin/InstallApp-NT.bat.in" target="$INSTALL_PATH/wsp/InstallApp-NT.bat" />
+			<singlefile src="tanuki/wrapper-windows-x86-32-3.4.1/src/bin/UninstallApp-NT.bat.in" target="$INSTALL_PATH/wsp/UninstallApp-NT.bat" />
+			
+			<file src="tanuki/wrapper-windows-x86-32-3.4.1/lib/wrapper.dll" targetdir="$INSTALL_PATH/wsp/wrapperlib" />
+			 <file src="tanuki/wrapper-windows-x86-32-3.4.1/lib/wrappertest.jar" targetdir="$INSTALL_PATH/wsp/wrapperlib" />
+			<file src="tanuki/wrapper-windows-x86-32-3.4.1/lib/wrapper.jar" targetdir="$INSTALL_PATH/wsp/wrapperlib" />
+<!--			
+todo: licenses
+			 If you are not using the Community Edition version of Tanuki, you will also need to copy the license file they provided into the {WSP_HOME}\conf
+-->			 
+			
+			<singlefile src="tanuki/wrapper-windows-x86-32-3.4.1/src/conf/wrapper.conf" target="$INSTALL_PATH/wsp/conf/wrapper.conf" />
+			<parsable targetfile="$INSTALL_PATH/wsp/etc/wsp.properties"  type="javaprop"/>
+			<parsable targetfile="$INSTALL_PATH/wsp/etc/jetty.xml" type="xml" />
+			<parsable targetfile="$INSTALL_PATH/wsp/etc/jetty-ssl.xml" type="xml" />
+			<parsable targetfile="$INSTALL_PATH/wsp/conf/wrapper.conf" type="javaprop" />
+		</pack>
+		<pack name="WitsRelay" required="no">
+			<description>Wellstorm Witsml Relay</description>
+			<fileset dir="" targetdir="$INSTALL_PATH">
+				<include name="witsrelay/**"/>
+			</fileset>
+			<parsable targetfile="$INSTALL_PATH/witsrelay/config/witsrelay.config"  type="javaprop"/>
+		</pack>
+	</packs>
+
+</installation>

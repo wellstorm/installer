@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<project name="installer" default="usage" basedir=".">
+    <import file="../masterbuild/commonbuild.xml" />
+        
+    <path id="module.path">
+    </path>
+    
+    
+    <path id="module.test.path">
+  </path>
+    
+
+  <!-- ===================================================================
+      -  Template target.  Never called explicitly, only used to pass target
+      -  calls to the underlying children builds.
+      -  =================================================================== -->
+      
+    <target name="dependencyTemplate" depends="init">
+        <!-- This section defines the modules and the order in which they are
+             executed for any given target.  This means ORDER MATTERS.
+             Any dependencies that are to be satisified by one module for another
+             must be declared in the order the dependencies occur. -->
+    
+        <ant target="${target}" dir="."/>
+
+        <!-- add more dependant modules as necessary... -->
+    </target>
+    
+  
+  <!-- Allows us to use the IzPack Ant task, standalone-compiler.jar added to Ant lib -->
+
+  
+  <target name="build-installer">
+
+	<echo message="Running IzPack to build the installer..."/>
+	<taskdef name="izpack" classname="com.izforge.izpack.ant.IzPackTask">
+	<classpath>
+      <fileset dir="${dir.libs}/izpack">
+        <include name="standalone-compiler.jar" />
+      </fileset>
+    </classpath>
+  </taskdef>
+	<copy  todir="${dir.project.dist}">
+			<fileset dir=".">
+				<include name="*"/>
+				<include name="tanuki/**"/>
+				<exclude name="install-definition.xml"/>
+				<exclude name="build.xml"/>
+			</fileset>
+	</copy>
+		
+
+<izpack input="install-definition.xml"
+        output="${dir.project.dist}/wellstorm-install.jar"
+        installerType="standard"        
+        basedir="${dir.project.dist}"/>
+	
+	</target>
+</project>

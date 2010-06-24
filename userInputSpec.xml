@@ -1,0 +1,206 @@
+<userInput>
+
+	<panel order="0" id="userinputpanel.oracle">
+		<createForPack name="WSP"/>
+		<field type="title" txt="Database Connection Configuration" bold="true" size="1"/>
+		<field type="staticText" align="left"
+			txt="Specify the connection parameters to connect to the Oracle Database"/>
+		<field type="divider" align="top"/>
+		<field type="text" variable="database.username">
+			<spec txt="Username:" size="15" set=""/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator"
+				txt="Must specifiy a username."/>
+		</field>
+		<field type="password" align="left" variable="database.password">
+			<spec>
+				<pwd txt="Password:" size="15" set=""/>
+				<pwd txt="Retype password:" size="15" set=""/>
+			</spec>
+			<validator class="com.izforge.izpack.util.PasswordEqualityValidator"
+				txt="Passwords must match."/>
+		</field>
+		<field type="text" variable="database.host">
+			<spec txt="host:" size="30" set=""/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator"
+				txt="Must specifiy a hostname."/>
+		</field>
+		<field type="text" variable="database.sid">
+			<spec txt="SID:" size="15" set="witsml"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt="Must specifiy a SID."
+			/>
+		</field>
+		<field type="text" variable="database.port">
+			<spec txt="Port:" size="5" set="1521"/>
+			<validator class="com.izforge.izpack.util.RegularExpressionValidator"
+				txt="Invalid port number">
+				<param name="pattern" value="[0-9]{1,5}"/>
+			</validator>
+		</field>
+
+	</panel>
+	
+	
+	<panel order="1"  id="userinputpanel.jetty">
+		<createForPack name="WSP"/>
+		<field type="title" txt="HTTP Server configuration" bold="true" size="1"/>
+		<field type="staticText" align="left"
+			txt="Configure HTTP/HTTPS server"/>
+		<field type="divider" align="top"/>
+		
+		<field type="text" variable="jetty.host">
+			<description align="left" txt="To bind WSP web server to a specific address, specify a domain name or IP address or else leave 0.0.0.0"/>
+			<spec txt="Address:" size="30" set="0.0.0.0"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator"
+				txt="Must specifiy an address."/>
+		</field>
+		<field type="text" variable="jetty.port" >
+			<spec txt="Port:" size="5" set="8080"/>
+			<validator class="com.izforge.izpack.util.PortValidator"
+				txt="Port is in use">
+			</validator>
+			<validator class="com.izforge.izpack.util.RegularExpressionValidator"
+				txt="Invalid port number">
+				<param name="pattern" value="[0-9]{1,5}"/>
+			</validator>
+			
+		</field>
+		<field type="text" variable="jetty.ssl.port">
+			<spec txt="SSL Port:" size="5" set="8443"/>
+			<validator class="com.izforge.izpack.util.PortValidator"
+				txt="SSL Port is in use">
+			</validator>
+			<validator class="com.izforge.izpack.util.RegularExpressionValidator"
+				txt="Invalid SSL port number">
+				<param name="pattern" value="[0-9]{1,5}"/>
+			</validator>
+		</field>
+		<field type="space"/>
+		<field type="check" variable="jetty.check.keystorepanel">
+			<description align="left" txt="Checking the following box will bring you to a keystore configuration panel "/>
+			<spec txt="Configure own keystore:" true="true" false="false" set="false"/>
+		</field>
+		
+	</panel>
+	
+	<panel order="2"  id="userinputpanel.jetty.keystore">
+		<createForPack name="WSP"/>
+		
+		<field type="title" txt="Web server keystore setup" bold="true" size="1"/>
+		<field type="staticText" align="left"
+			txt="Configure Keystore"/>
+		<field type="divider" align="top"/>		
+		<field type="staticText" align="left" txt="Existing file or URL of the SSL Key store, leave unchanged to use default"/>				
+		<field type="file" align="left" variable="jetty.ssl.keystore">
+			<spec txt="" size="25"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator"
+				txt="Must specifiy a kestore."/>			
+		</field>
+		
+		<field type="space"/>
+		<field type="staticText" align="left" txt="Existing SSL keystore password, leave unchanged to use default"/>
+		<field type="password" align="left" variable="jetty.ssl.keystore.password">			
+			<spec>
+				<pwd txt="Password:" size="15"/>
+				<pwd txt="Retype password:" size="15" />
+			</spec>
+			<validator class="com.izforge.izpack.util.PasswordEqualityValidator"
+				txt="Passwords must match."/>
+		</field>
+		
+	</panel>
+	
+	
+	<panel order="3"  id="userinputpanel.witsrelay">
+		<createForPack name="WitsRelay"/>
+		
+		<field type="title" txt="WistRelay configuration" bold="true" size="1"/>
+		<field type="staticText" align="left"
+			txt="Configure WitsRelay"/>
+		<field type="divider" align="top"/>
+		
+		<field type="text" variable="witsrelay.listen.port">			
+			<spec txt="Listen port:" size="5" set="9487"/>
+			<validator class="com.izforge.izpack.util.PortValidator"
+				txt="SSL Port is in use">
+			</validator>
+			<validator class="com.izforge.izpack.util.RegularExpressionValidator"
+				txt="Invalid SSL port number">
+				<param name="pattern" value="[0-9]{1,5}"/>
+			</validator>
+		</field>
+		
+		<field type="radio" variable="witsrelay.listen.protocol">
+			<description align="left" txt="Protocol may be tcp or udp; default is tcp:"/>
+			<spec>
+				<choice txt="UDP" value="udp" />
+				<choice txt="TCP" value="tcp" set="true" />
+			</spec>
+		</field>		
+		<field type="space"/>
+		
+		<field type="text" variable="witsrelay.repository.url">
+			<description align="left" txt="WSP Repository Url (todo: if installed with WSP - it should be localhost/or bound host address)"/>
+			<spec txt="WSP Repository Url:" size="30" set="localhost"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator"
+				txt="Must specify a repository url."/>
+		</field>
+		<field type="space"/>
+		
+		<field type="staticText" align="left" txt="Username and Password for connecting to WSP repository"/>
+		
+		
+		<field type="text" variable="witsrelay.repository.user">
+			
+			<spec txt="Username:" size="15"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator"
+				txt="Must specifiy a repository username."/>
+		</field>
+		
+		<field type="password" align="left" variable="witsrelay.repository.passwd">			
+			<spec>
+				<pwd txt="Password:" size="15"/>
+				<pwd txt="Retype password:" size="15" />
+			</spec>
+			<validator class="com.izforge.izpack.util.PasswordEqualityValidator"
+			txt="Passwords must match."/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator"
+				txt="Must specify a password for connecting to WSP repository."/>			
+		</field>
+		<field type="space"/>
+		<field type="check" variable="witsrelay.metric.units">
+			<description align="left" txt="Check if WITS data  is metric?"/>
+			<spec txt="is metric?" true="true" false="false" set="true"/>
+		</field>
+		
+		
+		<field type="text" variable="witsrelay.service.company">						
+			<spec txt="Company name:" size="30"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator"
+				txt="Must specifiy a Service Company name."/>
+		</field>
+		<field type="space"/>
+		<field type="text" variable="witsrelay.null.value">			
+			<description align="left" txt="Specify missing value indicator"/>
+			<spec txt="Null value:" size="15" set="-9999.0"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator"
+				txt="Must specifiy a null value indicator"/>
+		</field>
+		
+		
+		<field type="space"/>		
+		<field type="staticText" align="left" txt="If present present, the wellUid and wellboreUid will override. Leaving fields empty will not override uid well and uid wellbore"/>
+		
+		<!-- ${witsrelay.enable.uidwell.overide} -->
+		<field type="text" variable="witsrelay.uidwell.override">			
+			<spec txt="Well uid:" size="30" />
+		</field>
+		<!-- ${witsrelay.enable.uidwellbore.overide} -->
+		<field type="text" variable="witsrelay.uidwellbore.override">			
+			<spec txt="Wellbore uid:" size="30"/>
+		</field>
+		
+	</panel>
+	
+		
+
+</userInput>
