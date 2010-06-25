@@ -141,6 +141,10 @@
 			<singlefile src="tanuki/wrapper-windows-x86-32-3.4.1/src/bin/App.bat.in" target="$INSTALL_PATH/wsp/WspApp.bat" />
 			<singlefile src="tanuki/wrapper-windows-x86-32-3.4.1/src/bin/InstallApp-NT.bat.in" target="$INSTALL_PATH/wsp/InstallApp-NT.bat" />
 			<singlefile src="tanuki/wrapper-windows-x86-32-3.4.1/src/bin/UninstallApp-NT.bat.in" target="$INSTALL_PATH/wsp/UninstallApp-NT.bat" />
+			<!-- rename template files -->
+			<singlefile src="wsp/etc/_wsp.properties" target="$INSTALL_PATH/wsp/etc/wsp.properties" />
+			<singlefile src="wsp/etc/_jetty.xml" target="$INSTALL_PATH/wsp/etc/jetty.xml" />
+			<singlefile src="wsp/etc/_jetty-ssl.xml" target="$INSTALL_PATH/wsp/etc/jetty-ssl.xml" />
 			
 			<file src="tanuki/wrapper-windows-x86-32-3.4.1/lib/wrapper.dll" targetdir="$INSTALL_PATH/wsp/wrapperlib" />
 			 <file src="tanuki/wrapper-windows-x86-32-3.4.1/lib/wrappertest.jar" targetdir="$INSTALL_PATH/wsp/wrapperlib" />
