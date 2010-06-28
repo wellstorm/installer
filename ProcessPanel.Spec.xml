@@ -1,0 +1,9 @@
+<processing>
+
+  <job name="	Installing Windows Services">
+    <os family="windows" />
+    <executefile name="$INSTALL_PATH/wsp/xyz.bat">
+      <arg>doit</arg><arg>$variable</arg>
+    </executefile>
+  </job>
+</processing>
