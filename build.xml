@@ -51,7 +51,7 @@
 		
 
 <izpack input="install-definition.xml"
-        output="${dir.project.dist}/wellstorm-install.jar"
+        output="${dir.project.dist}/wsp-install.jar"
         installerType="standard"        
         basedir="${dir.project.dist}"/>
 	

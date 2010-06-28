@@ -48,13 +48,17 @@
 		<field type="divider" align="top"/>
 		
 		<field type="text" variable="jetty.host">
-			<description align="left" txt="To bind WSP web server to a specific address, specify a domain name or IP address or else leave 0.0.0.0"/>
+			<description align="left" txt="To bind WSP web server to a specific address, provide a domain name or IP address or else leave 0.0.0.0"/>
 			<spec txt="Address:" size="30" set="0.0.0.0"/>
 			<validator class="com.izforge.izpack.util.NotEmptyValidator"
 				txt="Must specifiy an address."/>
 		</field>
+		
+		<field type="space"/>
+		<field type="staticText" align="left"
+			txt="The WSP ports to use for unsecure and secure SSL connections"/>
 		<field type="text" variable="jetty.port" >
-			<spec txt="Port:" size="5" set="8080"/>
+			<spec txt="Port:" size="5" set="80"/>
 			<validator class="com.izforge.izpack.util.PortValidator"
 				txt="Port is in use">
 			</validator>
@@ -65,7 +69,7 @@
 			
 		</field>
 		<field type="text" variable="jetty.ssl.port">
-			<spec txt="SSL Port:" size="5" set="8443"/>
+			<spec txt="SSL Port:" size="5" set="443"/>
 			<validator class="com.izforge.izpack.util.PortValidator"
 				txt="SSL Port is in use">
 			</validator>
@@ -76,8 +80,8 @@
 		</field>
 		<field type="space"/>
 		<field type="check" variable="jetty.check.keystorepanel">
-			<description align="left" txt="Checking the following box will bring you to a keystore configuration panel "/>
-			<spec txt="Configure own keystore:" true="true" false="false" set="false"/>
+			<description align="left" txt="Check to follow up with keystore configuration, leave unchecked to use default keystore"/>
+			<spec txt="Configure own keystore" true="true" false="false" set="false"/>
 		</field>
 		
 	</panel>
@@ -119,7 +123,7 @@
 		<field type="divider" align="top"/>		
 		<field type="staticText" align="left" txt="Existing file or URL of tanuki license file"/>				
 		<field type="file" align="left" variable="tanuki.wrapper.license">
-			<spec txt="${tanuki.wrapper.license}" size="25"/>
+			<spec txt="" size="25"/>
 			<validator class="com.izforge.izpack.util.NotEmptyValidator"
 				txt="Must specifiy a license."/>			
 		</field>

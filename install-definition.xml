@@ -16,9 +16,9 @@
         The meaning of the tags should be natural ...
     -->
     <info>
-        <appname>WellstormWSP</appname>
-        <appversion>${app-version}</appversion>
+        <appname>Wellstorm WSP</appname>        
         <url>http://www.wellstorm.com</url>
+	<appversion>2</appversion>
         <javaversion>1.5</javaversion>
         <requiresjdk>no</requiresjdk>
         <!--><pack200/>-->
@@ -34,9 +34,11 @@
 	<variables>
 		<variable name="app-version" value="1.4"/>
 		<variable name="released-on" value="10/03/2010"/>
-		<variable name="tanuki.dir" value="tanuki/wrapper-windows-x86-32-3.4.1"/>
+		<!-- variable name="tanuki.dir" value="tanuki/wrapper-windows-x86-32-3.4.1"/-->
+		<variable name="tanuki.dir" value="tanuki/wrapper-windows-x86-32-3.4.1-com"/>
 		<!-- setting this to true will force the panel asking for the tanuki license location" -->
-		<variable name="tanuki.standard.edition" value="true"/>
+		<variable name="tanuki.standard.edition" value="false"/>
+		<variable name="configure.witsrelay" value="false"/>
 		
 	</variables>
 
@@ -55,10 +57,14 @@
         The ids must be these ones if you want to use the LicencePanel and/or the InfoPanel.
     -->
     <resources>
-	<res id="HTMLInfoPanel.info" src="install-readme.html" />
+	
+	<!-- res id="HTMLHelloPanel.info" src="welcome.html" /-->
+	<!-- res id="HTMLInfoPanel.info" src="install-readme.html" /-->
        <res id="HTMLLicencePanel.licence" src="license.html" />       
         <!-- res id="installer.langsel.img" src="splash-3.10.png" /-->
 	<res id="userInputSpec.xml" src="userInputSpec.xml" />
+	<res  id="ProcessPanel.Spec.xml" src="ProcessPanel.Spec.xml" />
+	 
     </resources>
 
     <!-- 
@@ -66,8 +72,8 @@
         We indicate here which panels we want to use. The order will be respected.
     -->
     <panels>
-        <panel classname="HelloPanel"  id="hellopanel"/>
-        <panel classname="HTMLInfoPanel" id="infopanel" encoding="ISO-8859-1"/>
+        <panel classname="CheckedHelloPanel"  id="hellopanel"/>
+        <!-- panel classname="HTMLInfoPanel" id="infopanel" encoding="ISO-8859-1"/-->
         <panel classname="HTMLLicencePanel" id="licensepanel"/>
         <panel classname="TargetPanel" id="targetpanel"/>
         <panel classname="PacksPanel" id="packspanel"/>
@@ -76,10 +82,11 @@
 	<panel classname="UserInputPanel" id="userinputpanel.jetty.keystore" condition="jetty.cond.show.keystorepanel"/>	
 	<panel classname="UserInputPanel" id="userinputpanel.tanuki" condition="tanuki.cond.show.licensepanel"/>	
 		
-	<panel classname="UserInputPanel" id="userinputpanel.witsrelay"/>	
+	<!-- panel classname="UserInputPanel" id="userinputpanel.witsrelay"/-->	
         <panel classname="SummaryPanel" id="summarypanel"/>
-	<panel classname="DataCheckPanel" />
+	
         <panel classname="InstallPanel" id="installpanel"/>
+	<panel classname="ProcessPanel"/>
         <panel classname="FinishPanel"  id="finishpanel"/>
     </panels>
 
@@ -87,10 +94,10 @@
     <listeners>
         <listener installer="SummaryLoggerInstallerListener"/>
 	<!-- for windows we check the registry if product was already installed -->
-	<!-- listener installer="RegistryInstallerListener"
+	<listener installer="RegistryInstallerListener"
                   uninstaller="RegistryUninstallerListener">
             <os family="windows"/>
-        </listener-->
+        </listener>
 
     </listeners>
 <conditions>
@@ -104,6 +111,13 @@
       <name>tanuki.standard.edition</name>
       <value>true</value>
     </condition>
+
+    <condition type="variable" id="witsrelay.show.panel">
+      <name>configure.witsrelay</name>
+      <value>true</value>
+    </condition>
+
+
 
     
 
@@ -181,14 +195,15 @@ todo: licenses
 			<parsable targetfile="$INSTALL_PATH/wsp/InstallApp-NT.bat" type="plain" />
 			<parsable targetfile="$INSTALL_PATH/wsp/UninstallApp-NT.bat" type="plain" />
 		</pack>
-		
-		<pack name="WitsRelay" required="no">
+		<!--
+		<pack name="WitsRelay" required="no" condition="witsrelay.show.panel">
 			<description>Wellstorm Witsml Relay</description>
 			<fileset dir="" targetdir="$INSTALL_PATH">
 				<include name="witsrelay/**"/>
 			</fileset>
 			<parsable targetfile="$INSTALL_PATH/witsrelay/config/witsrelay.config"  type="javaprop"/>
 		</pack>
+		-->
 	</packs>
 
 </installation>
