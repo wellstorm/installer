@@ -110,7 +110,24 @@
 	</panel>
 	
 	
-	<panel order="3"  id="userinputpanel.witsrelay">
+	<panel order="3"  id="userinputpanel.tanuki">
+		<createForPack name="WSP"/>
+		
+		<field type="title" txt="Service wrapper setup" bold="true" size="1"/>
+		<field type="staticText" align="left"
+			txt="Tanuki license file location"/>
+		<field type="divider" align="top"/>		
+		<field type="staticText" align="left" txt="Existing file or URL of tanuki license file"/>				
+		<field type="file" align="left" variable="tanuki.wrapper.license">
+			<spec txt="${tanuki.wrapper.license}" size="25"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator"
+				txt="Must specifiy a license."/>			
+		</field>
+		
+		
+	</panel>
+	
+	<panel order="4"  id="userinputpanel.witsrelay">
 		<createForPack name="WitsRelay"/>
 		
 		<field type="title" txt="WistRelay configuration" bold="true" size="1"/>

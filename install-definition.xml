@@ -19,7 +19,7 @@
         <appname>WellstormWSP</appname>
         <appversion>${app-version}</appversion>
         <url>http://www.wellstorm.com</url>
-        <javaversion>1.6</javaversion>
+        <javaversion>1.5</javaversion>
         <requiresjdk>no</requiresjdk>
         <!--><pack200/>-->
         <!-- run-privileged condition="izpack.windowsinstall.vista|izpack.windowsinstall.7"/ -->	
@@ -31,16 +31,14 @@
     -->
     <guiprefs width="640" height="480" resizable="yes"/>
     
-    <variables>
-    <variable name="test.installer" value="Hinky"/>
-  <variable name="app-version" value="1.4"/>
-  <variable name="released-on" value="08/03/2002"/>
-  <variable name="prop1-value" value="foo"/>
-  <variable name="prop2-value" value="goo"/>
-  <variable name="condition.var" value="QAS"/>
-  <variable name="tanuki.dir" value="wrapper-windows-x86-32-3.4.1"/>
-  
-</variables>
+	<variables>
+		<variable name="app-version" value="1.4"/>
+		<variable name="released-on" value="10/03/2010"/>
+		<variable name="tanuki.dir" value="tanuki/wrapper-windows-x86-32-3.4.1"/>
+		<!-- setting this to true will force the panel asking for the tanuki license location" -->
+		<variable name="tanuki.standard.edition" value="true"/>
+		
+	</variables>
 
 
     <!-- 
@@ -57,7 +55,7 @@
         The ids must be these ones if you want to use the LicencePanel and/or the InfoPanel.
     -->
     <resources>
-    <res id="HTMLInfoPanel.info" src="install-readme.html" />
+	<res id="HTMLInfoPanel.info" src="install-readme.html" />
        <res id="HTMLLicencePanel.licence" src="license.html" />       
         <!-- res id="installer.langsel.img" src="splash-3.10.png" /-->
 	<res id="userInputSpec.xml" src="userInputSpec.xml" />
@@ -76,8 +74,9 @@
 	<panel classname="UserInputPanel" id="userinputpanel.oracle"/>
 	<panel classname="UserInputPanel" id="userinputpanel.jetty"/>	
 	<panel classname="UserInputPanel" id="userinputpanel.jetty.keystore" condition="jetty.cond.show.keystorepanel"/>	
+	<panel classname="UserInputPanel" id="userinputpanel.tanuki" condition="tanuki.cond.show.licensepanel"/>	
+		
 	<panel classname="UserInputPanel" id="userinputpanel.witsrelay"/>	
-	<panel classname="DataCheckPanel" />
         <panel classname="SummaryPanel" id="summarypanel"/>
 	<panel classname="DataCheckPanel" />
         <panel classname="InstallPanel" id="installpanel"/>
@@ -95,15 +94,18 @@
 
     </listeners>
 <conditions>
-    <condition type="variable" id="condition.1">
-      <name>condition.var</name>
-      <value>QAP</value>
-    </condition>
 
     <condition type="variable" id="jetty.cond.show.keystorepanel">
       <name>jetty.check.keystorepanel</name>
       <value>true</value>
     </condition>
+
+    <condition type="variable" id="tanuki.cond.show.licensepanel">
+      <name>tanuki.standard.edition</name>
+      <value>true</value>
+    </condition>
+
+    
 
 <condition type="variable" id="uidwellbore.override.notset">
       <name>witsrelay.uidwellbore.override</name>
@@ -121,13 +123,19 @@
 		<variable name="witsrelay.enable.uidwellbore.overide" value="" condition="!uidwellbore.override.notset"/>	
 		<variable name="witsrelay.enable.uidwellbore.overide" value="#" condition="uidwellbore.override.notset"/>	
 
+		<variable name="java.home" value="$INSTALL_PATH/jre6u20"/>
+		<variable name="java.command" value="$INSTALL_PATH/jre6u20/bin/java" /> 
+		<variable name="tanuki.wrapper.conf" value="$INSTALL_PATH/wsp/conf/wrapper.conf" /> 
+		<variable name="tanuki.wrapper.license" value="$INSTALL_PATH/wsp/wrapper-license.conf" /> 
+		
   </dynamicvariables>
     <!-- 
         The packs section.
         We specify here our packs.
     -->
 	<packs>
-		<pack name="WSP" required="no">
+
+		<pack name="WSP" required="yes">
 			<description>Wellstorm Witsml Service Platform</description>
 			<fileset dir="" targetdir="$INSTALL_PATH">
 				<include name="wsp/**"/>
@@ -137,29 +145,43 @@
 				-->
 			</fileset>
 			<!-- copy tanuki -->
-			<singlefile src="tanuki/wrapper-windows-x86-32-3.4.1/bin/wrapper.exe" target="$INSTALL_PATH/wsp/wrapper.exe" />
-			<singlefile src="tanuki/wrapper-windows-x86-32-3.4.1/src/bin/App.bat.in" target="$INSTALL_PATH/wsp/WspApp.bat" />
-			<singlefile src="tanuki/wrapper-windows-x86-32-3.4.1/src/bin/InstallApp-NT.bat.in" target="$INSTALL_PATH/wsp/InstallApp-NT.bat" />
-			<singlefile src="tanuki/wrapper-windows-x86-32-3.4.1/src/bin/UninstallApp-NT.bat.in" target="$INSTALL_PATH/wsp/UninstallApp-NT.bat" />
+			<singlefile src="${tanuki.dir}/bin/wrapper.exe" target="$INSTALL_PATH/wsp/wrapper.exe" condition= "izpack.windowsinstall"/>
+			<singlefile src="${tanuki.dir}/src/bin/App.bat.in" target="$INSTALL_PATH/wsp/WspApp.bat" condition= "izpack.windowsinstall"/>
+			<singlefile src="${tanuki.dir}/src/bin/InstallApp-NT.bat.in" target="$INSTALL_PATH/wsp/InstallApp-NT.bat" condition= "izpack.windowsinstall"/>
+			<singlefile src="${tanuki.dir}/src/bin/UninstallApp-NT.bat.in" target="$INSTALL_PATH/wsp/UninstallApp-NT.bat" condition= "izpack.windowsinstall"/>
 			<!-- rename template files -->
 			<singlefile src="wsp/etc/_wsp.properties" target="$INSTALL_PATH/wsp/etc/wsp.properties" />
 			<singlefile src="wsp/etc/_jetty.xml" target="$INSTALL_PATH/wsp/etc/jetty.xml" />
 			<singlefile src="wsp/etc/_jetty-ssl.xml" target="$INSTALL_PATH/wsp/etc/jetty-ssl.xml" />
 			
-			<file src="tanuki/wrapper-windows-x86-32-3.4.1/lib/wrapper.dll" targetdir="$INSTALL_PATH/wsp/wrapperlib" />
-			 <file src="tanuki/wrapper-windows-x86-32-3.4.1/lib/wrappertest.jar" targetdir="$INSTALL_PATH/wsp/wrapperlib" />
-			<file src="tanuki/wrapper-windows-x86-32-3.4.1/lib/wrapper.jar" targetdir="$INSTALL_PATH/wsp/wrapperlib" />
+			<file src="${tanuki.dir}/lib/wrapper.dll" targetdir="$INSTALL_PATH/wsp/wrapperlib" condition= "izpack.windowsinstall"/>
+			<file src="${tanuki.dir}/lib/wrapper.jar" targetdir="$INSTALL_PATH/wsp/wrapperlib" condition= "izpack.windowsinstall"/>
+			 <file src="${tanuki.dir}/lib/wrappertest.jar" targetdir="$INSTALL_PATH/wsp/wrapperlib" condition= "izpack.windowsinstall"/>
+		<!-- condition= '"izpack.windowsinstall"/> -->
+			
+			<!-- we invoke this from ant and all files are relative to basedir buildroot/build/dist, but the jre is
+			       is kept under the ../..i/nstaller/jre6u20 -->
+			<fileset dir="../../installer" targetdir="$INSTALL_PATH">
+				<include name="jre6u20/**"/>
+			</fileset>
+
+			
 <!--			
 todo: licenses
 			 If you are not using the Community Edition version of Tanuki, you will also need to copy the license file they provided into the {WSP_HOME}\conf
 -->			 
 			
-			<singlefile src="tanuki/wrapper-windows-x86-32-3.4.1/src/conf/wrapper.conf" target="$INSTALL_PATH/wsp/conf/wrapper.conf" />
+			<singlefile src="${tanuki.dir}/src/conf/wrapper.conf" target="$INSTALL_PATH/wsp/conf/wrapper.conf" condition= "izpack.windowsinstall"/>
 			<parsable targetfile="$INSTALL_PATH/wsp/etc/wsp.properties"  type="javaprop"/>
 			<parsable targetfile="$INSTALL_PATH/wsp/etc/jetty.xml" type="xml" />
 			<parsable targetfile="$INSTALL_PATH/wsp/etc/jetty-ssl.xml" type="xml" />
+			<!--parsable targetfile="$INSTALL_PATH/wsp/conf/wrapper.conf" type="javaprop" condition= "izpack.windowsinstall"/-->
 			<parsable targetfile="$INSTALL_PATH/wsp/conf/wrapper.conf" type="javaprop" />
+			<parsable targetfile="$INSTALL_PATH/wsp/WspApp.bat" type="plain" />
+			<parsable targetfile="$INSTALL_PATH/wsp/InstallApp-NT.bat" type="plain" />
+			<parsable targetfile="$INSTALL_PATH/wsp/UninstallApp-NT.bat" type="plain" />
 		</pack>
+		
 		<pack name="WitsRelay" required="no">
 			<description>Wellstorm Witsml Relay</description>
 			<fileset dir="" targetdir="$INSTALL_PATH">
