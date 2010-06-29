@@ -6,4 +6,11 @@
     </executefile>
   </job>
    <onFail previous="true" next="false" />
+     <job name="Starting Windows Services">
+    <os family="windows" />
+    <executefile name="$INSTALL_PATH/wsp/start-wsp-service.bat">      
+    </executefile>
+  </job>
+   <onFail previous="true" next="false" />
+
 </processing>
