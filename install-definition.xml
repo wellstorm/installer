@@ -160,10 +160,10 @@
 			<description>Wellstorm Witsml Service Platform</description>
 			<fileset dir="" targetdir="$INSTALL_PATH">
 				<include name="wsp/**"/>
-				<!--
-				<exclude name="wsp/lib/"/>
-				<exclude name="wsp/web/"/>
-				-->
+				
+				<exclude name="wsp/etc/wsp.properties/"/>
+				<exclude name="wsp/etc/jetty.xml"/>
+				<exclude name="wsp/etc/jetty-ssl.xml"/>
 			</fileset>
 			<!-- copy tanuki -->
 			<singlefile src="${tanuki.dir}/bin/wrapper.exe" target="$INSTALL_PATH/wsp/wrapper.exe" condition= "izpack.windowsinstall" override="true" />
@@ -198,6 +198,11 @@
 			<parsable targetfile="$INSTALL_PATH/wsp/WspApp.bat" type="plain" />
 			<parsable targetfile="$INSTALL_PATH/wsp/InstallApp-NT.bat" type="plain" />
 			<parsable targetfile="$INSTALL_PATH/wsp/UninstallApp-NT.bat" type="plain" />
+			
+			
+			<executable targetfile="$INSTALL_PATH/wsp/UninstallApp-NT.bat" stage="uninstall">
+				<os family="windows"/>
+			</executable>
 		</pack>
 		<!--
 		<pack name="WitsRelay" required="no" condition="witsrelay.show.panel">
