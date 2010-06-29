@@ -113,8 +113,36 @@
 		
 	</panel>
 	
+
+	<panel order="3"  id="userinputpanel.jvm">
+		<createForPack name="WSP"/>
+		
+		<field type="title" txt="JVM Configuration" bold="true" size="1"/>
+		
+		<field type="staticText" align="left"
+			txt="JVM Configuration"/>
+		<field type="divider" align="top"/>		
+		<field type="staticText" align="left" txt="Intial/minimum (-Xms) and maximum (-Xmx) memory (heap) used by WSP. Under ideal circumstances, both should be set to the same value to eliminate memory allocation during program execution."/>				
+		<field type="text" variable="jvm.xms">
+			<spec txt="-Xms (in MB)" size="5" set="1024"/>
+			<validator class="com.izforge.izpack.util.RegularExpressionValidator"
+				txt="Invalid -Xms number, must be between 100 and 9999">
+				<param name="pattern" value="[0-9]{3,4}"/>
+			</validator>
+		</field>
+		<field type="text" variable="jvm.xmx">
+			<spec txt="-Xmx (in MB)" size="5" set="1024"/>
+			<validator class="com.izforge.izpack.util.RegularExpressionValidator"
+				txt="Invalid -Xmx number, must be between 100 and 9999">
+				<param name="pattern" value="[0-9]{3,4}"/>
+			</validator>
+		</field>		
+		
+
+	</panel>
 	
-	<panel order="3"  id="userinputpanel.tanuki">
+
+	<panel order="4"  id="userinputpanel.tanuki">
 		<createForPack name="WSP"/>
 		
 		<field type="title" txt="Service wrapper setup" bold="true" size="1"/>
@@ -131,7 +159,7 @@
 		
 	</panel>
 	
-	<panel order="4"  id="userinputpanel.witsrelay">
+	<panel order="5"  id="userinputpanel.witsrelay">
 		<createForPack name="WitsRelay"/>
 		
 		<field type="title" txt="WistRelay configuration" bold="true" size="1"/>
