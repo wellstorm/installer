@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<registration_data version="1.0">
+   <environment>
+      <hostname>WINACLE</hostname>
+      <hostId/>
+      <osName>Windows Server 2008</osName>
+      <osVersion>6.0</osVersion>
+      <osArchitecture>amd64</osArchitecture>
+      <systemModel>VMware Virtual Platform</systemModel>
+      <systemManufacturer>VMware, Inc.</systemManufacturer>
+      <cpuManufacturer>AuthenticAMD</cpuManufacturer>
+      <serialNumber>VMware-56 4d 41 f8 83 2d ac 99-06 92 f9 4f 70 7e 9c f3</serialNumber>
+   </environment>
+   <registry urn="urn:st:770d9b9b-1e75-4d09-83d0-8b012905a9c8" version="1.0">
+      <service_tag>
+         <instance_urn>urn:st:dfa7dda9-7e43-4972-b5af-e897312570f2</instance_urn>
+         <product_name>Java SE 6 Development Kit</product_name>
+         <product_version>1.6.0_21</product_version>
+         <product_urn>urn:uuid:b58ef9a8-5ae8-11db-a023-080020a9ed93</product_urn>
+         <product_parent_urn>urn:uuid:fdc90b21-018d-4cab-b866-612c7c119ed3</product_parent_urn>
+         <product_parent>Java Platform Standard Edition 6 (Java SE 6)</product_parent>
+         <product_defined_inst_id>id=1.6.0_21-b07 amd64,dir=C:\Program Files\Java\jdk1.6.0_21\jre</product_defined_inst_id>
+         <product_vendor>Sun Microsystems</product_vendor>
+         <platform_arch>amd64</platform_arch>
+         <timestamp>2010-08-05 02:50:22 GMT</timestamp>
+         <container>global</container>
+         <source>Windows JDK i586 installer</source>
+         <installer_uid>-1</installer_uid>
+      </service_tag>
+   </registry>
+</registration_data>
