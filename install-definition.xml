@@ -123,7 +123,10 @@
     </condition>
 
 
-
+   <condition type="variable" id="is32bit"> 
+      <name>SYSTEM_sun_arch_data_model</name> 
+      <value>32</value> 
+   </condition> 
     
 
 <condition type="variable" id="uidwellbore.override.notset">
@@ -142,7 +145,12 @@
 		<variable name="witsrelay.enable.uidwellbore.overide" value="" condition="!uidwellbore.override.notset"/>	
 		<variable name="witsrelay.enable.uidwellbore.overide" value="#" condition="uidwellbore.override.notset"/>	
 
-		<variable name="java.home" value="$INSTALL_PATH/jre6u20"/>
+                <!-- the WSP service and jres for the respective architectures -->
+		<variable name="winfolder" value="x64" condition="!is32bit"/>	
+		<variable name="winfolder" value="win32" condition="is32bit"/>	
+
+
+                <variable name="java.home" value="$INSTALL_PATH/jre6u20"/>
 		<variable name="java.command" value="$INSTALL_PATH/jre6u20/bin/java" /> 
 		<variable name="tanuki.wrapper.conf" value="$INSTALL_PATH/wsp/conf/wrapper.conf" /> 
 		<variable name="tanuki.wrapper.license" value="$INSTALL_PATH/wsp/wrapper-license.conf" /> 
@@ -166,42 +174,59 @@
 				<exclude name="wsp/etc/jetty-ssl.xml"/>
 			</fileset>
 			<!-- copy tanuki -->
+                        <!-- 
 			<singlefile src="${tanuki.dir}/bin/wrapper.exe" target="$INSTALL_PATH/wsp/wrapper.exe" condition= "izpack.windowsinstall" override="true" />
 			<singlefile src="${tanuki.dir}/src/bin/App.bat.in" target="$INSTALL_PATH/wsp/WspApp.bat" condition= "izpack.windowsinstall" override="true"/>
 			<singlefile src="${tanuki.dir}/src/bin/InstallApp-NT.bat.in" target="$INSTALL_PATH/wsp/InstallApp-NT.bat" condition= "izpack.windowsinstall" override="true"/>
 			<singlefile src="${tanuki.dir}/src/bin/UninstallApp-NT.bat.in" target="$INSTALL_PATH/wsp/UninstallApp-NT.bat" condition= "izpack.windowsinstall" override="true"/>
+                        -->
 			<!-- rename template files -->
 			<singlefile src="wsp/etc/_wsp.properties" target="$INSTALL_PATH/wsp/etc/wsp.properties" override="true"/>
 			<singlefile src="wsp/etc/_jetty.xml" target="$INSTALL_PATH/wsp/etc/jetty.xml" override="true"/>
 			<singlefile src="wsp/etc/_jetty-ssl.xml" target="$INSTALL_PATH/wsp/etc/jetty-ssl.xml" override="true"/>
 			
+                        <!-- 
 			<file src="${tanuki.dir}/lib/wrapper.dll" targetdir="$INSTALL_PATH/wsp/wrapperlib" condition= "izpack.windowsinstall" override="true"/>
 			<file src="${tanuki.dir}/lib/wrapper.jar" targetdir="$INSTALL_PATH/wsp/wrapperlib" condition= "izpack.windowsinstall" override="true"/>
 			 <file src="${tanuki.dir}/lib/wrappertest.jar" targetdir="$INSTALL_PATH/wsp/wrapperlib" condition= "izpack.windowsinstall" override="true"/>
+                         -->
 			 <file src="../../wsp/log4j.wsp.properties" targetdir="$INSTALL_PATH/wsp" override="true"/>
+                         
 			 <file src="../../installer/start-wsp-service.bat" targetdir="$INSTALL_PATH/wsp" override="true"/>
 			 
 		<!-- condition= '"izpack.windowsinstall"/> -->
 			
 			<!-- we invoke this from ant and all files are relative to basedir buildroot/build/dist, but the jre is
 			       is kept under the ../..i/nstaller/jre6u20 -->
-			<fileset dir="../../installer" targetdir="$INSTALL_PATH" override="true">
-				<include name="jre6u20/**"/>
+			<fileset dir="../../installer" targetdir="$INSTALL_PATH" override="true" condition= "is32bit">
+				<include name="win32/**"/>
 			</fileset>
-			
+
+			<fileset dir="../../installer" targetdir="$INSTALL_PATH" override="true" condition= "!is32bit">
+				<include name="x64/**"/>
+			</fileset>
+
+                        <!--
 			<singlefile src="${tanuki.dir}/src/conf/wrapper.conf" target="$INSTALL_PATH/wsp/conf/wrapper.conf" condition= "izpack.windowsinstall"/>
+                        -->
 			<parsable targetfile="$INSTALL_PATH/wsp/etc/wsp.properties"  type="javaprop"/>
 			<parsable targetfile="$INSTALL_PATH/wsp/etc/jetty.xml" type="xml" />
 			<parsable targetfile="$INSTALL_PATH/wsp/etc/jetty-ssl.xml" type="xml" />
 			<!--parsable targetfile="$INSTALL_PATH/wsp/conf/wrapper.conf" type="javaprop" condition= "izpack.windowsinstall"/-->
+                        <!-- 
 			<parsable targetfile="$INSTALL_PATH/wsp/conf/wrapper.conf" type="javaprop" />
-			<parsable targetfile="$INSTALL_PATH/wsp/WspApp.bat" type="plain" />
+                        -->
+			<!-- 
+                        <parsable targetfile="$INSTALL_PATH/wsp/WspApp.bat" type="plain" />
 			<parsable targetfile="$INSTALL_PATH/wsp/InstallApp-NT.bat" type="plain" />
 			<parsable targetfile="$INSTALL_PATH/wsp/UninstallApp-NT.bat" type="plain" />
+			-->
 			
-			
-			<executable targetfile="$INSTALL_PATH/wsp/UninstallApp-NT.bat" stage="uninstall">
+			<executable targetfile="$INSTALL_PATH/${winfolder}/WSPService.exe" stage="uninstall">
 				<os family="windows"/>
+                                    <args>
+                                        <arg value="\/u"/>
+                                </args>
 			</executable>
 		</pack>
 		<!--

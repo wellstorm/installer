@@ -2,7 +2,12 @@
 
   <job name="	Installing Windows Services">
     <os family="windows" />
-    <executefile name="$INSTALL_PATH/wsp/InstallApp-NT.bat">      
+    <executefile name="$INSTALL_PATH/${winfolder}/WSPService.exe">      
+        <arg>/i</arg>    
+        <arg>/m</arg>    
+        <arg>${jvm.xmx}m</arg>    
+        <arg>/h</arg>    
+        <arg>$INSTALL_PATH\wsp</arg>    
     </executefile>
   </job>
    <onFail previous="true" next="false" />

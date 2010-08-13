@@ -122,7 +122,8 @@
 		<field type="staticText" align="left"
 			txt="JVM Configuration"/>
 		<field type="divider" align="top"/>		
-		<field type="staticText" align="left" txt="Intial/minimum (-Xms) and maximum (-Xmx) memory (heap) used by WSP. Under ideal circumstances, both should be set to the same value to eliminate memory allocation during program execution."/>				
+		<field type="staticText" align="left" txt="Specify heap memory used by WSP."/>				
+                <!--
 		<field type="text" variable="jvm.xms">
 			<spec txt="-Xms (in MB)" size="5" set="1024"/>
 			<validator class="com.izforge.izpack.util.RegularExpressionValidator"
@@ -130,8 +131,9 @@
 				<param name="pattern" value="[0-9]{3,4}"/>
 			</validator>
 		</field>
+                -->
 		<field type="text" variable="jvm.xmx">
-			<spec txt="-Xmx (in MB)" size="5" set="1024"/>
+			<spec txt="Heap memory (in MB)" size="5" set="1024"/>
 			<validator class="com.izforge.izpack.util.RegularExpressionValidator"
 				txt="Invalid -Xmx number, must be between 100 and 9999">
 				<param name="pattern" value="[0-9]{3,4}"/>

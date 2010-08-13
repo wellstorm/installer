@@ -1,1 +1,1 @@
-net start "Wellstorm WSP"
+net start "wspservice"
