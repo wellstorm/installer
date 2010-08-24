@@ -11,6 +11,7 @@
 
 <installation version="1.0">
 
+
     <!-- 
         The info section.
         The meaning of the tags should be natural ...
@@ -39,6 +40,7 @@
 		<!-- setting this to true will force the panel asking for the tanuki license location" -->
 		<variable name="tanuki.standard.edition" value="false"/>
 		<variable name="configure.witsrelay" value="false"/>
+                <variable name="UNINSTALL_NAME" value="wsp"/>
 		
 	</variables>
 
@@ -68,6 +70,7 @@
 	
 	<res id="TargetPanel.dir.windows" src="windir.txt"/>
 	<res id="TargetPanel.dir.unix" src="linuxdir.txt"/>
+         <res id="RegistrySpec.xml"          src="RegistrySpec.xml" />
     </resources>
 
     <!-- 
@@ -129,12 +132,21 @@
    </condition> 
     
 
-<condition type="variable" id="uidwellbore.override.notset">
-      <name>witsrelay.uidwellbore.override</name>
-      <value/>
-    </condition>
+        <condition type="variable" id="uidwellbore.override.notset">
+                <name>witsrelay.uidwellbore.override</name>
+                <value/>
+        </condition>
 
 
+        <condition type="or" id="xpinstallation">
+                <condition type="ref" refid="izpack.windowsinstall.xp"/>
+                <condition type="ref" refid="izpack.windowsinstall.2003"/>
+        </condition>
+
+        <condition type="or" id="vistainstallation">
+                <condition type="ref" refid="izpack.windowsinstall.vista"/>
+                <condition type="ref" refid="izpack.windowsinstall.7"/>
+        </condition>
      </conditions>
      
      <dynamicvariables>
@@ -240,4 +252,8 @@
 		-->
 	</packs>
 
+
+            <native type="3rdparty" name="COIOSHelper.dll" stage="both">
+                <os family="windows"/>
+            </native>
 </installation>
