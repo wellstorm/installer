@@ -26,36 +26,22 @@
         <!-- add more dependant modules as necessary... -->
     </target>
     
+        <target name="build-exe" depends="build-installer,exe-win32,exe-x64">/
   
-  <!-- Allows us to use the IzPack Ant task, standalone-compiler.jar added to Ant lib -->
-
-  
-  <target name="build-installer">
-
-	<echo message="Running IzPack to build the installer..."/>
-	<taskdef name="izpack" classname="com.izforge.izpack.ant.IzPackTask">
-	<classpath>
-      <fileset dir="${dir.libs}/izpack">
-        <include name="standalone-compiler.jar" />
-      </fileset>
-    </classpath>
-  </taskdef>
-	<copy  todir="${dir.project.dist}">
-			<fileset dir=".">
-				<include name="*"/>
-				<include name="tanuki/**"/>
-				<exclude name="install-definition.xml"/>
-				<exclude name="build.xml"/>
-			</fileset>
-	</copy>
-		
-<delete file="${dir.project.dist}/wsp-install.jar"/>
-
-<izpack input="install-definition.xml"
-        output="${dir.project.dist}/wsp-install.jar"
-        installerType="standard"        
-        basedir="${dir.project.dist}"/>
-	
+        <target name="build-installer">
+                <copy  todir="${dir.project.dist}">
+                                <fileset dir=".">
+                                        <include name="*"/>
+                                        <include name="tanuki/**"/>
+                                        <exclude name="install-definition.xml"/>
+                                        <exclude name="build.xml"/>
+                                </fileset>
+                </copy>
+                <delete file="${dir.project.dist}/wsp-install.jar"/>
+                <izpack input="install-definition.xml"
+                        output="${dir.project.dist}/wsp-install.jar"
+                        installerType="standard"        
+                        basedir="${dir.project.dist}"/>
 	</target>
 
         <taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" >
@@ -67,8 +53,15 @@
                 </classpath>
         </taskdef>		
 
+        <taskdef name="izpack" classname="com.izforge.izpack.ant.IzPackTask">
+                <classpath>
+                        <fileset dir="${dir.libs}/izpack">
+                                <include name="standalone-compiler.jar" />
+                        </fileset>
+                </classpath>
+        </taskdef>
 	
-<!-- target name="exe" depends="build-installer" -->
+        
         <target name="exe-win32" >
                 <build-installer-exe win-dir="win32"/>
 	</target>
@@ -77,22 +70,18 @@
                 <build-installer-exe win-dir="x64"/>
 	</target>
 
-<macrodef name="build-installer-exe">
+        <macrodef name="build-installer-exe">
 		<attribute name="win-dir"/>
 		<sequential>
-                <mkdir dir="@{win-dir}-install/"/>
-                <mkdir dir="@{win-dir}-install/jre"/>
-                <copy  file="${dir.project.dist}/wsp-install.jar" todir="@{win-dir}-install"/>
-                <copy   todir="@{win-dir}-install/jre">
-                        <fileset dir="@{win-dir}/jre"/>
-                </copy>
-                <!--
-		<launch4j configFile="./l4j-config.xml" jar="../build/dist/wsp-install.jar" outfile="@{win-dir}-install/wsp-setup.exe"/>
-                -->
-                <delete  file="@{win-dir}-install/wsp-install.jar" />
-                
-                  <move file="@{win-dir}-install" tofile="${dir.project.dist}/@{win-dir}-install"/>
-                
+                        <mkdir dir="@{win-dir}-install/"/>
+                        <mkdir dir="@{win-dir}-install/jre"/>
+                        <copy  file="${dir.project.dist}/wsp-install.jar" todir="@{win-dir}-install"/>
+                        <copy   todir="@{win-dir}-install/jre">
+                                <fileset dir="@{win-dir}/jre"/>
+                        </copy>
+                        <launch4j configFile="./l4j-config.xml" jar="../build/dist/wsp-install.jar" outfile="@{win-dir}-install/wsp-setup.exe"/>
+                        <delete  file="@{win-dir}-install/wsp-install.jar" />
+                        <move file="@{win-dir}-install" tofile="${dir.project.dist}/@{win-dir}-install"/>
                 </sequential>
 	</macrodef>
 
