@@ -1,0 +1,14 @@
+<launch4jConfig>
+  <dontWrapJar>false</dontWrapJar>
+  <headerType>gui</headerType>
+  <!-- can be overwritten in ant -->
+  <jar>wsp-install.jar</jar>
+  <!-- can be overwritten in ant -->
+  <outfile>C:\launcher\setup.exe</outfile>
+  <priority>normal</priority>
+  <customProcName>false</customProcName>
+  <stayAlive>false</stayAlive>
+  <jre>
+    <path>./jre</path>
+  </jre>
+</launch4jConfig>

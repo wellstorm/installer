@@ -57,4 +57,43 @@
         basedir="${dir.project.dist}"/>
 	
 	</target>
+
+        <taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" >
+                <classpath>
+                        <fileset dir="${dir.libs}/launch4j">
+                                <include name="launch4j.jar" />
+                                <include name="xstream.jar" />
+                        </fileset>
+                </classpath>
+        </taskdef>		
+
+	
+<!-- target name="exe" depends="build-installer" -->
+        <target name="exe-win32" >
+                <build-installer-exe win-dir="win32"/>
+	</target>
+
+        <target name="exe-x64" >
+                <build-installer-exe win-dir="x64"/>
+	</target>
+
+<macrodef name="build-installer-exe">
+		<attribute name="win-dir"/>
+		<sequential>
+                <mkdir dir="@{win-dir}-install/"/>
+                <mkdir dir="@{win-dir}-install/jre"/>
+                <copy  file="${dir.project.dist}/wsp-install.jar" todir="@{win-dir}-install"/>
+                <copy   todir="@{win-dir}-install/jre">
+                        <fileset dir="@{win-dir}/jre"/>
+                </copy>
+                <!--
+		<launch4j configFile="./l4j-config.xml" jar="../build/dist/wsp-install.jar" outfile="@{win-dir}-install/wsp-setup.exe"/>
+                -->
+                <delete  file="@{win-dir}-install/wsp-install.jar" />
+                
+                  <move file="@{win-dir}-install" tofile="${dir.project.dist}/@{win-dir}-install"/>
+                
+                </sequential>
+	</macrodef>
+
 </project>
