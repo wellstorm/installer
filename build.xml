@@ -26,13 +26,13 @@
         <!-- add more dependant modules as necessary... -->
     </target>
     
-        <target name="build-exe" depends="build-installer,exe-win32,exe-x64">/
+        <target name="build-exe" depends="build-installer,exe-win32,exe-x64"/>
   
         <target name="build-installer">
                 <copy  todir="${dir.project.dist}">
                                 <fileset dir=".">
                                         <include name="*"/>
-                                        <include name="tanuki/**"/>
+                                        <!-- include name="tanuki/**"/-->
                                         <exclude name="install-definition.xml"/>
                                         <exclude name="build.xml"/>
                                 </fileset>
